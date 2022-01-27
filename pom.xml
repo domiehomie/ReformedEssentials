@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>eu.reformedstudios</groupId>
+    <artifactId>ReformedEssentials</artifactId>
+    <version>DEV</version>
+
+    <properties>
+        <java.version>17</java.version>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.2.4</version>
+                <configuration>
+                    <createDependencyReducedPom>false</createDependencyReducedPom>
+                    <outputFile>${pluginDir}/${project.artifactId}-${project.version}.jar</outputFile>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <distributionManagement>
+        <repository>
+            <id>space-maven</id>
+            <!--suppress UnresolvedMavenProperty -->
+            <url>${repositoryUrl}</url>
+        </repository>
+    </distributionManagement>
+
+    <repositories>
+        <repository>
+            <id>purpur</id>
+            <url>https://repo.purpurmc.org/snapshots</url>
+        </repository>
+        <repository>
+            <id>reformed-repo</id>
+            <url>https://repo.reformedstudios.eu/releases</url>
+        </repository>
+        <repository>
+            <id>space-maven</id>
+            <url>https://maven.pkg.jetbrains.space/reformed/p/rc/reformed-repo</url>
+        </repository>
+    </repositories>
+    
+    <dependencies>
+        <dependency>
+            <groupId>org.purpurmc.purpur</groupId>
+            <artifactId>purpur-api</artifactId>
+            <version>1.18.1-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>eu.reformedstudios</groupId>
+            <artifactId>reformed-core-api</artifactId>
+            <version>0.3.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>eu.reformedstudios</groupId>
+            <artifactId>ReformedCore</artifactId>
+            <version>0.3.0</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
+    
+</project>

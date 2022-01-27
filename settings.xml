@@ -1,0 +1,9 @@
+<settings>
+    <servers>
+        <server>
+            <id>space-maven</id>
+            <username>${spaceUsername}</username>
+            <password>${spacePassword}</password>
+        </server>
+    </servers>
+</settings>
