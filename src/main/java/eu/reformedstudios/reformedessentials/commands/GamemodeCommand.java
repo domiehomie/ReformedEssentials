@@ -62,7 +62,7 @@ public class GamemodeCommand extends CommandListener {
 			player.setGameMode(gm);
 			player.sendMessage(messaging.normalMessage("Set gamemode to ")
 											.append(
-															messaging.simpleGradient(gm.name().toUpperCase(Locale.US))
+															messaging.success(gm.name().toLowerCase(Locale.US))
 											)
 											.append(
 															messaging.normalMessageNoPrefix(".")
@@ -78,10 +78,10 @@ public class GamemodeCommand extends CommandListener {
 
 			sender.sendMessage(
 							messaging.normalMessage("Set gamemode of ")
-											.append(messaging.simpleGradient(target.getName()))
+											.append(messaging.success(target.getName()))
 											.append(messaging.normalMessageNoPrefix(" to "))
 											.append(
-															messaging.simpleGradient(gm.name().toUpperCase(Locale.US))
+															messaging.success(gm.name().toLowerCase(Locale.US))
 											)
 											.append(
 															messaging.normalMessageNoPrefix(".")
