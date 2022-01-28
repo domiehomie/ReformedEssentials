@@ -7,6 +7,7 @@ import eu.reformedstudios.reformedcoreapi.commands.CommandListener;
 import net.kyori.adventure.text.Component;
 import org.apache.commons.math3.util.Precision;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
@@ -42,6 +43,7 @@ public class GcCommand extends CommandListener {
 
 		double tps = Precision.round(Bukkit.getTPS()[0], 2);
 		double tickTime = Precision.round(Bukkit.getAverageTickTime(), 2);
+
 
 		double totalMemory = Precision.round(Runtime.getRuntime().totalMemory() / 1073741824d, 2);
 		double freeMemory = Precision.round(Runtime.getRuntime().freeMemory() / 1073741824d, 2);
