@@ -81,7 +81,7 @@
         <dependency>
             <groupId>eu.reformedstudios</groupId>
             <artifactId>ReformedCore</artifactId>
-            <version>0.4.1</version>
+            <version>0.4.3</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
