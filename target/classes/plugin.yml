@@ -1,0 +1,11 @@
+main: eu.reformedstudios.reformedessentials.ReformedEssentials
+version: '${project.version}'
+name: ReformedEssentials
+author: Reformed
+description: Essential plugin from the Reformed team.
+prefix: RE
+api-version: 1.18
+database: true
+website: https://reformedstudios.eu/
+depend:
+  - ReformedCore
