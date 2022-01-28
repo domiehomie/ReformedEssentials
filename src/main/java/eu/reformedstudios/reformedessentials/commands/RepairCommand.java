@@ -53,11 +53,11 @@ public class RepairCommand extends CommandListener {
 					return true;
 				}
 				item.setDamage(0);
-				player.sendMessage(messaging.gradientMessage("Repaired the item in your main hand."));
+				player.sendMessage(messaging.successMessage("Repaired the item in your main hand."));
 			}
 			case "all" -> {
 				Arrays.stream(player.getInventory().getContents()).filter(Objects::nonNull).filter(i -> i.getItemMeta() != null).forEach(i -> i.setDamage(0));
-				player.sendMessage(messaging.gradientMessage("Repaired all items in your inventory."));
+				player.sendMessage(messaging.successMessage("Repaired all items in your inventory."));
 			}
 		}
 		return true;

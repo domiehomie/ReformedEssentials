@@ -1,7 +1,7 @@
-package eu.reformedstudios.reformedessentials.events.contexts;
+package eu.reformedstudios.reformedessentials.events.reformed.contexts;
 
 import eu.reformedstudios.reformedcoreapi.events.EventContext;
-import eu.reformedstudios.reformedessentials.events.Events;
+import eu.reformedstudios.reformedessentials.events.reformed.Events;
 
 import java.util.Map;
 

@@ -1,10 +1,10 @@
-package eu.reformedstudios.reformedessentials.events.listeners;
+package eu.reformedstudios.reformedessentials.events.reformed.listeners;
 
 import com.google.inject.Inject;
 import eu.reformedstudios.reformedcore.util.Messaging;
 import eu.reformedstudios.reformedcoreapi.events.EventContext;
 import eu.reformedstudios.reformedcoreapi.events.IEventListener;
-import eu.reformedstudios.reformedessentials.events.Events;
+import eu.reformedstudios.reformedessentials.events.reformed.Events;
 import org.bukkit.Bukkit;
 
 public class ServerMaintenanceListener implements IEventListener {
