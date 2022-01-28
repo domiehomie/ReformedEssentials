@@ -35,6 +35,7 @@ public class ReformedEssentials extends JavaPlugin {
 		manager.registerCommand(new RepairCommand());
 		manager.registerCommand(new ClearInventoryConfirmToggleCommand(this));
 		manager.registerCommand(new SpawnerCommand());
+		manager.registerCommand(new WeatherCommand());
 		manager.registerCommand(new HelpCommand(mod.getCommandManager()));
 
 
