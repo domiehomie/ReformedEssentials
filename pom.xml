@@ -6,7 +6,7 @@
 
     <groupId>eu.reformedstudios</groupId>
     <artifactId>ReformedEssentials</artifactId>
-    <version>0.2.0</version>
+    <version>1.0.0-SNAPSHOT</version>
 
     <properties>
         <java.version>17</java.version>
@@ -42,6 +42,11 @@
             <!--suppress UnresolvedMavenProperty -->
             <url>${repositoryUrl}</url>
         </repository>
+        <snapshotRepository>
+            <id>space-maven</id>
+            <!--suppress UnresolvedMavenProperty -->
+            <url>${repositoryUrl}</url>
+        </snapshotRepository>
     </distributionManagement>
 
     <repositories>
@@ -82,6 +87,12 @@
             <groupId>eu.reformedstudios</groupId>
             <artifactId>ReformedCore</artifactId>
             <version>0.4.3</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-math3</artifactId>
+            <version>3.6.1</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

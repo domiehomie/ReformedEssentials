@@ -9,3 +9,5 @@ database: true
 website: https://reformedstudios.eu/
 depend:
   - ReformedCore
+libraries:
+  - org.apache.commons:commons-math3:3.6.1
