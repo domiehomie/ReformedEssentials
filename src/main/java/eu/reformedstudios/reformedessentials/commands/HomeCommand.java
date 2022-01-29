@@ -16,56 +16,56 @@ import org.bukkit.entity.Player;
 
 public class HomeCommand extends CommandListener {
 
-	@Inject
-	private Messaging messaging;
-	@Inject
-	private IDatabase database;
-	private ReformedEssentials pl;
+   @Inject
+   private Messaging messaging;
+   @Inject
+   private IDatabase database;
+   private ReformedEssentials pl;
 
-	public HomeCommand(ReformedEssentials es) {
-		super(new CommandBuilder()
-						.setName("home")
-						.setDescription("Teleports you to your home.")
-						.setAliases()
-						.setUsage("/home [home]")
-						.createCommand()
-		);
-		this.pl = es;
-	}
+   public HomeCommand(ReformedEssentials es) {
+      super(new CommandBuilder()
+         .setName("home")
+         .setDescription("Teleports you to your home.")
+         .setAliases()
+         .setUsage("/home [home]")
+         .createCommand()
+      );
+      this.pl = es;
+   }
 
-	@Override
-	public boolean exec(CommandSender sender, Command cmd, String label, String[] args) {
-		if (!(sender instanceof Player player)) {
-			sender.sendMessage(messaging.errorMessage("Only players can execute this command."));
-			return true;
-		}
+   @Override
+   public boolean exec(CommandSender sender, Command cmd, String label, String[] args) {
+      if (!(sender instanceof Player player)) {
+         sender.sendMessage(messaging.errorMessage("Only players can execute this command."));
+         return true;
+      }
 
-		Bukkit.getScheduler().runTaskAsynchronously(pl, () -> {
-			database.createQuery(DbPlayer.class).filter(Filters.eq("uuid", player.getUniqueId().toString()))
-							.stream().findFirst()
-							.ifPresent(p -> {
-								if(args.length == 0) {
-									p.getHomes().stream().filter(h -> h.getName().equalsIgnoreCase("home")).findFirst()
-													.ifPresentOrElse(home -> {
-														Bukkit.getScheduler().runTask(pl, () -> player.teleport(new Location(Bukkit.getWorld(home.getWorld()), home.getX(), home.getY(), home.getZ(), (float) home.getPitch(), (float) home.getYaw())));
-														player.sendMessage(
-																		messaging.normalMessage("Teleported you to ")
-																						.append(messaging.success(home.getName()))
-																						.append(messaging.normalMessageNoPrefix("."))
-														);
-													}, () -> player.sendMessage(messaging.errorMessage("Couldn't find a home by the name \"home\".")));
-								} else {
-									p.getHomes().stream().filter(h -> h.getName().equalsIgnoreCase(args[0])).findFirst().ifPresentOrElse(
-													home -> Bukkit.getScheduler().runTask(pl, () -> {
-														player.teleport(new Location(Bukkit.getWorld(home.getWorld()), home.getX(), home.getY(), home.getZ(), (float) home.getPitch(), (float) home.getYaw()));
-														player.sendMessage(messaging.normalMessage("Teleported you to ")
-																		.append(messaging.success(home.getName()))
-																		.append(messaging.normalMessageNoPrefix(".")));
-													}), () -> player.sendMessage(messaging.errorMessage("Couldn't find a home by the name " + args[0] + "."))
-									);
-								}
-							});
-		});
-		return true;
-	}
+      Bukkit.getScheduler().runTaskAsynchronously(pl, () -> {
+         database.createQuery(DbPlayer.class).filter(Filters.eq("uuid", player.getUniqueId().toString()))
+            .stream().findFirst()
+            .ifPresent(p -> {
+               if (args.length == 0) {
+                  p.getHomes().stream().filter(h -> h.getName().equalsIgnoreCase("home")).findFirst()
+                     .ifPresentOrElse(home -> {
+                        Bukkit.getScheduler().runTask(pl, () -> player.teleport(new Location(Bukkit.getWorld(home.getWorld()), home.getX(), home.getY(), home.getZ(), (float) home.getYaw(), (float) home.getPitch())));
+                        player.sendMessage(
+                           messaging.normalMessage("Teleported you to ")
+                              .append(messaging.success(home.getName()))
+                              .append(messaging.normalMessageNoPrefix("."))
+                        );
+                     }, () -> player.sendMessage(messaging.errorMessage("Couldn't find a home by the name \"home\".")));
+               } else {
+                  p.getHomes().stream().filter(h -> h.getName().equalsIgnoreCase(args[0])).findFirst().ifPresentOrElse(
+                     home -> Bukkit.getScheduler().runTask(pl, () -> {
+                        player.teleport(new Location(Bukkit.getWorld(home.getWorld()), home.getX(), home.getY(), home.getZ(), (float) home.getYaw(), (float) home.getPitch()));
+                        player.sendMessage(messaging.normalMessage("Teleported you to ")
+                           .append(messaging.success(home.getName()))
+                           .append(messaging.normalMessageNoPrefix(".")));
+                     }), () -> player.sendMessage(messaging.errorMessage("Couldn't find a home by the name " + args[0] + "."))
+                  );
+               }
+            });
+      });
+      return true;
+   }
 }

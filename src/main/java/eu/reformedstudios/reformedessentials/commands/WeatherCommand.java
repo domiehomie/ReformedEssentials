@@ -39,11 +39,11 @@ public class WeatherCommand extends CommandListener {
 		switch (args[0]) {
 			case "sun", "sunny" -> {
 				player.getWorld().setStorm(false);
-				player.sendMessage(messaging.success("Set weather to sunny."));
+				player.sendMessage(messaging.successMessage("Set weather to sunny."));
 			}
 			case "storm", "stormy" -> {
 				player.getWorld().setStorm(true);
-				player.sendMessage(messaging.success("Set weather to stormy."));
+				player.sendMessage(messaging.successMessage("Set weather to stormy."));
 			}
 		}
 
