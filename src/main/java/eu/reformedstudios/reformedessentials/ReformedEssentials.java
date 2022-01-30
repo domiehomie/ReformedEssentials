@@ -41,6 +41,7 @@ public class ReformedEssentials extends JavaPlugin {
       manager.registerCommand(new EnderChestCommand());
       manager.registerCommand(new KickAllCommand());
       manager.registerCommand(new SpeedCommand());
+      manager.registerCommand(new TpAllCommand());
       manager.registerCommand(new HelpCommand(mod.getCommandManager()));
 
 
