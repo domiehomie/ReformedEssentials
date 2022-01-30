@@ -16,52 +16,58 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class ReformedEssentials extends JavaPlugin {
 
-   @Inject
-   private IEventManager manager;
-   @Inject
-   private Messaging messaging;
-   @Inject
-   private IDatabase database;
+	@Inject
+	private IEventManager manager;
+	@Inject
+	private Messaging messaging;
+	@Inject
+	private IDatabase database;
 
-   private ReformedModule mod;
+	private ReformedModule mod;
 
-   @Override
-   public void onEnable() {
+	@Override
+	public void onEnable() {
 
-      ICommandManager manager = mod.getCommandManager();
-      manager.registerCommand(new GamemodeCommand());
-      manager.registerCommand(new RepairCommand());
-      manager.registerCommand(new ClearInventoryConfirmToggleCommand(this));
-      manager.registerCommand(new SpawnerCommand());
-      manager.registerCommand(new WeatherCommand());
-      manager.registerCommand(new GcCommand());
-      manager.registerCommand(new SetHomeCommand(this));
-      manager.registerCommand(new HomeCommand(this));
-      manager.registerCommand(new DelHomeCommand(this));
-      manager.registerCommand(new EnderChestCommand());
-      manager.registerCommand(new KickAllCommand());
-      manager.registerCommand(new SpeedCommand());
-      manager.registerCommand(new TpAllCommand());
-      manager.registerCommand(new HelpCommand(mod.getCommandManager()));
-
-
-      Bukkit.getPluginManager().registerEvents(new DbPlayerCreate(this, messaging, database), this);
-
-   }
-
-   @Override
-   public void onDisable() {
-
-   }
-
-   @Override
-   public void onLoad() {
-      mod = ReformedModuleBuilder.builder()
-         .withName("ReformedEssentials")
-         .withMainClass(this)
-         .withEntities(DbPlayer.class, DbHome.class)
-         .build();
+		ICommandManager manager = mod.getCommandManager();
+		manager.registerCommand(new GamemodeCommand());
+		manager.registerCommand(new RepairCommand());
+		manager.registerCommand(new ClearInventoryConfirmToggleCommand(this));
+		manager.registerCommand(new SpawnerCommand());
+		manager.registerCommand(new WeatherCommand());
+		manager.registerCommand(new GcCommand());
+		manager.registerCommand(new SetHomeCommand(this));
+		manager.registerCommand(new HomeCommand(this));
+		manager.registerCommand(new DelHomeCommand(this));
+		manager.registerCommand(new EnderChestCommand());
+		manager.registerCommand(new KickAllCommand());
+		manager.registerCommand(new SpeedCommand());
+		manager.registerCommand(new TpAllCommand());
+		manager.registerCommand(new SuicideCommand());
+		manager.registerCommand(new TpToggleCommand(this));
+		manager.registerCommand(new DisposalCommand());
+		manager.registerCommand(new TopCommand());
+		manager.registerCommand(new TpCommand(this));
+		manager.registerCommand(new TpHereCommand(this));
+		manager.registerCommand(new HelpCommand(mod.getCommandManager()));
 
 
-   }
+		Bukkit.getPluginManager().registerEvents(new DbPlayerCreate(this, messaging, database), this);
+
+	}
+
+	@Override
+	public void onDisable() {
+
+	}
+
+	@Override
+	public void onLoad() {
+		mod = ReformedModuleBuilder.builder()
+			.withName("ReformedEssentials")
+			.withMainClass(this)
+			.withEntities(DbPlayer.class, DbHome.class)
+			.build();
+
+
+	}
 }

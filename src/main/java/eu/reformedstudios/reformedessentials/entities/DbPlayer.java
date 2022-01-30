@@ -12,39 +12,50 @@ import java.util.UUID;
 @Entity("reformedessentials:player")
 public class DbPlayer {
 
-   @Property("uuid")
-   String uuid;
-   @Property("clearInventoryConfirm")
-   boolean clearInventoryConfirm = true;
-   @Property(value = "homes")
-   List<DbHome> homes;
-   @Id
-   private ObjectId id;
+	@Property("uuid")
+	String uuid;
+	@Property("clearInventoryConfirm")
+	boolean clearInventoryConfirm = true;
+	@Property("teleporting")
+	boolean allowingTeleports;
+	@Property(value = "homes")
+	List<DbHome> homes;
+	@Id
+	private ObjectId id;
 
-   public DbPlayer(UUID uuid) {
-      this.uuid = uuid.toString();
-      this.homes = Collections.emptyList();
-   }
+	public DbPlayer(UUID uuid) {
+		this.uuid = uuid.toString();
+		this.homes = Collections.emptyList();
+		this.allowingTeleports = true;
+	}
 
-   public ObjectId getId() {
-      return id;
-   }
+	public boolean isAllowingTeleports() {
+		return allowingTeleports;
+	}
 
-   public List<DbHome> getHomes() {
-      return homes;
-   }
+	public void setAllowingTeleports(boolean allowingTeleports) {
+		this.allowingTeleports = allowingTeleports;
+	}
 
-   public void setHomes(List<DbHome> homes) {
-      this.homes = homes;
-   }
+	public ObjectId getId() {
+		return id;
+	}
 
-   public boolean isClearInventoryConfirm() {
-      return clearInventoryConfirm;
-   }
+	public List<DbHome> getHomes() {
+		return homes;
+	}
 
-   public void setClearInventoryConfirm(boolean clearInventoryConfirm) {
-      this.clearInventoryConfirm = clearInventoryConfirm;
-   }
+	public void setHomes(List<DbHome> homes) {
+		this.homes = homes;
+	}
+
+	public boolean isClearInventoryConfirm() {
+		return clearInventoryConfirm;
+	}
+
+	public void setClearInventoryConfirm(boolean clearInventoryConfirm) {
+		this.clearInventoryConfirm = clearInventoryConfirm;
+	}
 
 
 }
