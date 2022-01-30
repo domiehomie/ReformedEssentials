@@ -44,26 +44,16 @@ public class HomeCommand extends CommandListener {
          database.createQuery(DbPlayer.class).filter(Filters.eq("uuid", player.getUniqueId().toString()))
             .stream().findFirst()
             .ifPresent(p -> {
-               if (args.length == 0) {
-                  p.getHomes().stream().filter(h -> h.getName().equalsIgnoreCase("home")).findFirst()
-                     .ifPresentOrElse(home -> {
-                        Bukkit.getScheduler().runTask(pl, () -> player.teleport(new Location(Bukkit.getWorld(home.getWorld()), home.getX(), home.getY(), home.getZ(), (float) home.getYaw(), (float) home.getPitch())));
-                        player.sendMessage(
-                           messaging.normalMessage("Teleported you to ")
-                              .append(messaging.success(home.getName()))
-                              .append(messaging.normalMessageNoPrefix("."))
-                        );
-                     }, () -> player.sendMessage(messaging.errorMessage("Couldn't find a home by the name \"home\".")));
-               } else {
-                  p.getHomes().stream().filter(h -> h.getName().equalsIgnoreCase(args[0])).findFirst().ifPresentOrElse(
-                     home -> Bukkit.getScheduler().runTask(pl, () -> {
-                        player.teleport(new Location(Bukkit.getWorld(home.getWorld()), home.getX(), home.getY(), home.getZ(), (float) home.getYaw(), (float) home.getPitch()));
-                        player.sendMessage(messaging.normalMessage("Teleported you to ")
+
+               p.getHomes().stream().filter(h -> h.getName().equalsIgnoreCase(args.length == 0 ? "home" : args[0])).findFirst()
+                  .ifPresentOrElse(home -> {
+                     Bukkit.getScheduler().runTask(pl, () -> player.teleport(new Location(Bukkit.getWorld(home.getWorld()), home.getX(), home.getY(), home.getZ(), (float) home.getYaw(), (float) home.getPitch())));
+                     player.sendMessage(
+                        messaging.normalMessage("Teleported you to ")
                            .append(messaging.success(home.getName()))
-                           .append(messaging.normalMessageNoPrefix(".")));
-                     }), () -> player.sendMessage(messaging.errorMessage("Couldn't find a home by the name " + args[0] + "."))
-                  );
-               }
+                           .append(messaging.normalMessageNoPrefix("."))
+                     );
+                  }, () -> player.sendMessage(messaging.errorMessage("Couldn't find a home by that name.")));
             });
       });
       return true;
