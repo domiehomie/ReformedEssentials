@@ -13,8 +13,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class TpToggleCommand extends CommandListener {
-
+public class TpAutoCommand extends CommandListener {
 
 	private final ReformedEssentials pl;
 	@Inject
@@ -22,15 +21,14 @@ public class TpToggleCommand extends CommandListener {
 	@Inject
 	private IDatabase database;
 
-	public TpToggleCommand(ReformedEssentials es) {
+	public TpAutoCommand(ReformedEssentials es) {
 		super(new CommandBuilder()
-			.setName("tptoggle")
-			.setDescription("Toggles ")
-			.setUsage("/tptoggle")
+			.setName("tpauto")
+			.setDescription("Toggles automatic accepting of /tpa requests.")
+			.setUsage("/tpauto")
 			.setAliases()
 			.setPermissions()
 			.createCommand());
-
 		this.pl = es;
 	}
 
@@ -41,20 +39,19 @@ public class TpToggleCommand extends CommandListener {
 			return true;
 		}
 
-		Bukkit.getScheduler().runTaskAsynchronously(pl, () -> database.createQuery(DbPlayer.class)
-			.filter(Filters.eq("uuid", player.getUniqueId().toString()))
-			.stream()
-			.findFirst()
-			.ifPresent(p -> {
-				p.setAllowingTeleports(!p.isAllowingTeleports());
-				database.save(p);
-
-				player.sendMessage(messaging.normalMessage("Allow teleports: ")
-					.append(messaging.success(String.valueOf(p.isAllowingTeleports())))
-					.append(messaging.normalMessageNoPrefix("."))
-				);
-			}));
-
+		Bukkit.getScheduler().runTaskAsynchronously(pl, () -> {
+			database.createQuery(DbPlayer.class)
+				.filter(Filters.eq("uuid", player.getUniqueId().toString()))
+				.stream()
+				.findFirst()
+				.ifPresent(p -> {
+					p.setAutoAcceptingTpa(!p.isAutoAcceptingTpa());
+					database.save(p);
+					player.sendMessage(messaging.normalMessage("Automatically accept TPAs: ")
+						.append(messaging.success(String.valueOf(p.isAutoAcceptingTpa())))
+						.append(messaging.normalMessageNoPrefix(".")));
+				});
+		});
 
 		return true;
 	}

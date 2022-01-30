@@ -4,24 +4,24 @@ import com.google.inject.Inject;
 import eu.reformedstudios.reformedcore.util.Messaging;
 import eu.reformedstudios.reformedcoreapi.commands.CommandBuilder;
 import eu.reformedstudios.reformedcoreapi.commands.CommandListener;
-import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 
-public class DisposalCommand extends CommandListener {
+import java.util.Objects;
+
+public class TpoHereCommand extends CommandListener {
 
 	@Inject
 	private Messaging messaging;
 
-	public DisposalCommand() {
+	public TpoHereCommand() {
 		super(new CommandBuilder()
-			.setName("disposal")
-			.setDescription("Opens a temporary inventory.")
-			.setUsage("/disposal")
-			.setAliases("trash")
+			.setName("tpohere")
+			.setDescription("Teleports a player to you. Bypasses /tptoggle.")
+			.setUsage("/tpohere <player>")
+			.setAliases()
 			.setPermissions()
 			.createCommand());
 	}
@@ -32,12 +32,18 @@ public class DisposalCommand extends CommandListener {
 			sender.sendMessage(messaging.errorMessage("Only players can execute this command."));
 			return true;
 		}
-		
-		Inventory inv = Bukkit.createInventory(player, 4 * 9);
-		player.openInventory(inv);
-		player.sendMessage(messaging.errorMessage("Items you put in here will be DELETED when you close the menu.")
-			.decorate(TextDecoration.BOLD)
-		);
+
+		if (args.length == 0 || Bukkit.getPlayer(args[0]) == null) {
+			sender.sendMessage(messaging.errorMessage("Invalid player."));
+			return true;
+		}
+
+		Player target = Objects.requireNonNull(Bukkit.getPlayer(args[0]));
+		target.teleport(player);
+
+		player.sendMessage(messaging.normalMessage("Teleported ")
+			.append(messaging.simpleGradient(target.getName()))
+			.append(messaging.normalMessageNoPrefix(" to you.")));
 
 		return true;
 	}

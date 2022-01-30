@@ -10,6 +10,7 @@ import eu.reformedstudios.reformedcoreapi.modules.ReformedModuleBuilder;
 import eu.reformedstudios.reformedessentials.commands.*;
 import eu.reformedstudios.reformedessentials.entities.DbHome;
 import eu.reformedstudios.reformedessentials.entities.DbPlayer;
+import eu.reformedstudios.reformedessentials.entities.TpaRequest;
 import eu.reformedstudios.reformedessentials.events.bukkit.DbPlayerCreate;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -48,6 +49,13 @@ public class ReformedEssentials extends JavaPlugin {
 		manager.registerCommand(new TopCommand());
 		manager.registerCommand(new TpCommand(this));
 		manager.registerCommand(new TpHereCommand(this));
+		manager.registerCommand(new TpoHereCommand());
+		manager.registerCommand(new TpoCommand());
+		manager.registerCommand(new TpposCommand());
+		manager.registerCommand(new TpAutoCommand(this));
+		manager.registerCommand(new TpaCommand(this));
+		manager.registerCommand(new TpAcceptCommand(this));
+		manager.registerCommand(new TpDenyCommand(this));
 		manager.registerCommand(new HelpCommand(mod.getCommandManager()));
 
 
@@ -65,7 +73,7 @@ public class ReformedEssentials extends JavaPlugin {
 		mod = ReformedModuleBuilder.builder()
 			.withName("ReformedEssentials")
 			.withMainClass(this)
-			.withEntities(DbPlayer.class, DbHome.class)
+			.withEntities(DbPlayer.class, DbHome.class, TpaRequest.class)
 			.build();
 
 
