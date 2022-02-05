@@ -58,6 +58,10 @@ public class ReformedEssentials extends JavaPlugin {
     manager.registerCommand(new TpDenyCommand(this));
     manager.registerCommand(new HatCommand());
     manager.registerCommand(new MoreCommand());
+    manager.registerCommand(new MessageToggleCommand(this));
+    manager.registerCommand(new MessageCommand(this));
+    manager.registerCommand(new SocialSpyCommand(this));
+    manager.registerCommand(new ReplyCommand(this));
     manager.registerCommand(new HelpCommand(module.getCommandManager()));
 
 
@@ -76,6 +80,7 @@ public class ReformedEssentials extends JavaPlugin {
        .withName("ReformedEssentials")
        .withMainClass(this)
        .withEntities(DbPlayer.class, DbHome.class, TpaRequest.class)
+       .withModule(new ReformedEssentialsModule())
        .build();
 
 
