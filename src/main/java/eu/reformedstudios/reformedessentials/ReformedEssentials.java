@@ -24,12 +24,12 @@ public class ReformedEssentials extends JavaPlugin {
 	@Inject
 	private IDatabase database;
 
-	private ReformedModule mod;
+	private ReformedModule module;
 
 	@Override
 	public void onEnable() {
 
-		ICommandManager manager = mod.getCommandManager();
+		ICommandManager manager = module.getCommandManager();
 		manager.registerCommand(new GamemodeCommand());
 		manager.registerCommand(new RepairCommand());
 		manager.registerCommand(new ClearInventoryConfirmToggleCommand(this));
@@ -56,7 +56,7 @@ public class ReformedEssentials extends JavaPlugin {
 		manager.registerCommand(new TpaCommand(this));
 		manager.registerCommand(new TpAcceptCommand(this));
 		manager.registerCommand(new TpDenyCommand(this));
-		manager.registerCommand(new HelpCommand(mod.getCommandManager()));
+		manager.registerCommand(new HelpCommand(module.getCommandManager()));
 
 
 		Bukkit.getPluginManager().registerEvents(new DbPlayerCreate(this, messaging, database), this);
@@ -70,7 +70,7 @@ public class ReformedEssentials extends JavaPlugin {
 
 	@Override
 	public void onLoad() {
-		mod = ReformedModuleBuilder.builder()
+		module = ReformedModuleBuilder.builder()
 			.withName("ReformedEssentials")
 			.withMainClass(this)
 			.withEntities(DbPlayer.class, DbHome.class, TpaRequest.class)

@@ -16,13 +16,13 @@ import org.bukkit.entity.Player;
 public class TpToggleCommand extends CommandListener {
 
 
-	private final ReformedEssentials pl;
+	private final ReformedEssentials plugin;
 	@Inject
 	private Messaging messaging;
 	@Inject
 	private IDatabase database;
 
-	public TpToggleCommand(ReformedEssentials es) {
+	public TpToggleCommand(ReformedEssentials plugin) {
 		super(new CommandBuilder()
 			.setName("tptoggle")
 			.setDescription("Toggles ")
@@ -31,7 +31,7 @@ public class TpToggleCommand extends CommandListener {
 			.setPermissions()
 			.createCommand());
 
-		this.pl = es;
+		this.plugin = plugin;
 	}
 
 	@Override
@@ -41,16 +41,16 @@ public class TpToggleCommand extends CommandListener {
 			return true;
 		}
 
-		Bukkit.getScheduler().runTaskAsynchronously(pl, () -> database.createQuery(DbPlayer.class)
+		Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> database.createQuery(DbPlayer.class)
 			.filter(Filters.eq("uuid", player.getUniqueId().toString()))
 			.stream()
 			.findFirst()
-			.ifPresent(p -> {
-				p.setAllowingTeleports(!p.isAllowingTeleports());
-				database.save(p);
+			.ifPresent(dbPlayer -> {
+				dbPlayer.setAllowingTeleports(!dbPlayer.isAllowingTeleports());
+				database.save(dbPlayer);
 
 				player.sendMessage(messaging.normalMessage("Allow teleports: ")
-					.append(messaging.success(String.valueOf(p.isAllowingTeleports())))
+					.append(messaging.success(String.valueOf(dbPlayer.isAllowingTeleports())))
 					.append(messaging.normalMessageNoPrefix("."))
 				);
 			}));

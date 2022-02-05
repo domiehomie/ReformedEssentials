@@ -16,46 +16,46 @@ import org.bukkit.entity.Player;
 
 public class HomeCommand extends CommandListener {
 
-   @Inject
-   private Messaging messaging;
-   @Inject
-   private IDatabase database;
-   private ReformedEssentials pl;
+  private final ReformedEssentials plugin;
+  @Inject
+  private Messaging messaging;
+  @Inject
+  private IDatabase database;
 
-   public HomeCommand(ReformedEssentials es) {
-      super(new CommandBuilder()
-         .setName("home")
-         .setDescription("Teleports you to your home.")
-         .setAliases()
-         .setUsage("/home [home]")
-         .createCommand()
-      );
-      this.pl = es;
-   }
+  public HomeCommand(ReformedEssentials plugin) {
+    super(new CommandBuilder()
+       .setName("home")
+       .setDescription("Teleports you to your home.")
+       .setAliases()
+       .setUsage("/home [home]")
+       .createCommand()
+    );
+    this.plugin = plugin;
+  }
 
-   @Override
-   public boolean exec(CommandSender sender, Command cmd, String label, String[] args) {
-      if (!(sender instanceof Player player)) {
-         sender.sendMessage(messaging.errorMessage("Only players can execute this command."));
-         return true;
-      }
-
-      Bukkit.getScheduler().runTaskAsynchronously(pl, () -> {
-         database.createQuery(DbPlayer.class).filter(Filters.eq("uuid", player.getUniqueId().toString()))
-            .stream().findFirst()
-            .ifPresent(p -> {
-
-               p.getHomes().stream().filter(h -> h.getName().equalsIgnoreCase(args.length == 0 ? "home" : args[0])).findFirst()
-                  .ifPresentOrElse(home -> {
-                     Bukkit.getScheduler().runTask(pl, () -> player.teleport(new Location(Bukkit.getWorld(home.getWorld()), home.getX(), home.getY(), home.getZ(), (float) home.getYaw(), (float) home.getPitch())));
-                     player.sendMessage(
-                        messaging.normalMessage("Teleported you to ")
-                           .append(messaging.success(home.getName()))
-                           .append(messaging.normalMessageNoPrefix("."))
-                     );
-                  }, () -> player.sendMessage(messaging.errorMessage("Couldn't find a home by that name.")));
-            });
-      });
+  @Override
+  public boolean exec(CommandSender sender, Command cmd, String label, String[] args) {
+    if (!(sender instanceof Player player)) {
+      sender.sendMessage(messaging.errorMessage("Only players can execute this command."));
       return true;
-   }
+    }
+
+    Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+      database.createQuery(DbPlayer.class).filter(Filters.eq("uuid", player.getUniqueId().toString()))
+         .stream().findFirst()
+         .ifPresent(p -> {
+
+           p.getHomes().stream().filter(home -> home.getName().equalsIgnoreCase(args.length == 0 ? "home" : args[0])).findFirst()
+              .ifPresentOrElse(home -> {
+                Bukkit.getScheduler().runTask(plugin, () -> player.teleport(new Location(Bukkit.getWorld(home.getWorld()), home.getX(), home.getY(), home.getZ(), (float) home.getYaw(), (float) home.getPitch())));
+                player.sendMessage(
+                   messaging.normalMessage("Teleported you to ")
+                      .append(messaging.success(home.getName()))
+                      .append(messaging.normalMessageNoPrefix("."))
+                );
+              }, () -> player.sendMessage(messaging.errorMessage("Couldn't find a home by that name.")));
+         });
+    });
+    return true;
+  }
 }

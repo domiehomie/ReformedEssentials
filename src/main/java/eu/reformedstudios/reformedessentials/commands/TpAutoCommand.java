@@ -15,44 +15,44 @@ import org.bukkit.entity.Player;
 
 public class TpAutoCommand extends CommandListener {
 
-	private final ReformedEssentials pl;
-	@Inject
-	private Messaging messaging;
-	@Inject
-	private IDatabase database;
+  private final ReformedEssentials plugin;
+  @Inject
+  private Messaging messaging;
+  @Inject
+  private IDatabase database;
 
-	public TpAutoCommand(ReformedEssentials es) {
-		super(new CommandBuilder()
-			.setName("tpauto")
-			.setDescription("Toggles automatic accepting of /tpa requests.")
-			.setUsage("/tpauto")
-			.setAliases()
-			.setPermissions()
-			.createCommand());
-		this.pl = es;
-	}
+  public TpAutoCommand(ReformedEssentials plugin) {
+    super(new CommandBuilder()
+       .setName("tpauto")
+       .setDescription("Toggles automatic accepting of /tpa requests.")
+       .setUsage("/tpauto")
+       .setAliases()
+       .setPermissions()
+       .createCommand());
+    this.plugin = plugin;
+  }
 
-	@Override
-	public boolean exec(CommandSender sender, Command cmd, String label, String[] args) {
-		if (!(sender instanceof Player player)) {
-			sender.sendMessage(messaging.errorMessage("Only players can execute this command."));
-			return true;
-		}
+  @Override
+  public boolean exec(CommandSender sender, Command cmd, String label, String[] args) {
+    if (!(sender instanceof Player player)) {
+      sender.sendMessage(messaging.errorMessage("Only players can execute this command."));
+      return true;
+    }
 
-		Bukkit.getScheduler().runTaskAsynchronously(pl, () -> {
-			database.createQuery(DbPlayer.class)
-				.filter(Filters.eq("uuid", player.getUniqueId().toString()))
-				.stream()
-				.findFirst()
-				.ifPresent(p -> {
-					p.setAutoAcceptingTpa(!p.isAutoAcceptingTpa());
-					database.save(p);
-					player.sendMessage(messaging.normalMessage("Automatically accept TPAs: ")
-						.append(messaging.success(String.valueOf(p.isAutoAcceptingTpa())))
-						.append(messaging.normalMessageNoPrefix(".")));
-				});
-		});
+    Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+      database.createQuery(DbPlayer.class)
+         .filter(Filters.eq("uuid", player.getUniqueId().toString()))
+         .stream()
+         .findFirst()
+         .ifPresent(dbPlayer -> {
+           dbPlayer.setAutoAcceptingTpa(!dbPlayer.isAutoAcceptingTpa());
+           database.save(dbPlayer);
+           player.sendMessage(messaging.normalMessage("Automatically accept TPAs: ")
+              .append(messaging.success(String.valueOf(dbPlayer.isAutoAcceptingTpa())))
+              .append(messaging.normalMessageNoPrefix(".")));
+         });
+    });
 
-		return true;
-	}
+    return true;
+  }
 }

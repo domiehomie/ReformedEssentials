@@ -15,59 +15,60 @@ import org.bukkit.entity.Player;
 
 public class TpAcceptCommand extends CommandListener {
 
-	private final ReformedEssentials pl;
-	@Inject
-	private Messaging messaging;
-	@Inject
-	private IDatabase database;
+  private final ReformedEssentials plugin;
+  @Inject
+  private Messaging messaging;
+  @Inject
+  private IDatabase database;
 
-	public TpAcceptCommand(ReformedEssentials es) {
-		super(new CommandBuilder()
-			.setName("tpaccept")
-			.setDescription("Accepts a pending teleport request.")
-			.setUsage("/tpaccept <player>")
-			.setAliases()
-			.setPermissions()
-			.createCommand());
-		this.pl = es;
-	}
+  public TpAcceptCommand(ReformedEssentials plugin) {
+    super(new CommandBuilder()
+       .setName("tpaccept")
+       .setDescription("Accepts a pending teleport request.")
+       .setUsage("/tpaccept <player>")
+       .setAliases()
+       .setPermissions()
+       .createCommand());
+    this.plugin = plugin;
+  }
 
-	@Override
-	public boolean exec(CommandSender sender, Command cmd, String label, String[] args) {
-		if (!(sender instanceof Player player)) {
-			sender.sendMessage(messaging.errorMessage("Only players can execute this command."));
-			return true;
-		}
+  @Override
+  public boolean exec(CommandSender sender, Command cmd, String label, String[] args) {
+    if (!(sender instanceof Player player)) {
+      sender.sendMessage(messaging.errorMessage("Only players can execute this command."));
+      return true;
+    }
 
-		if (args.length < 1) {
-			player.sendMessage("You must provide a player.");
-		}
+    if (args.length < 1) {
+      player.sendMessage("You must provide a player.");
+    }
 
-		var target = Bukkit.getPlayer(args[0]);
-		if (target == null) {
-			player.sendMessage(messaging.errorMessage("That player is currently offline."));
-			return true;
-		}
-		Bukkit.getScheduler().runTaskAsynchronously(pl, () -> {
-			database.createQuery(TpaRequest.class)
-				.filter(
-					Filters.eq("target", player.getUniqueId().toString()),
-					Filters.eq("sender", target.getUniqueId().toString()),
-					Filters.eq("active", true)
-				)
-				.stream()
-				.findFirst()
-				.ifPresentOrElse(r -> {
+    var target = Bukkit.getPlayer(args[0]);
+    if (target == null) {
+      player.sendMessage(messaging.errorMessage("That player is currently offline."));
+      return true;
+    }
 
-						r.setActive(false);
-						database.save(r);
-						Bukkit.getScheduler().runTask(pl, () -> target.teleport(player));
-						player.sendMessage(messaging.successMessage("Teleport commencing..."));
-						target.sendMessage(messaging.successMessage("Teleport commencing..."));
-					}, () ->
-						player.sendMessage(messaging.errorMessage("You don't have an active incoming request from that player."))
-				);
-		});
-		return true;
-	}
+    Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+      database.createQuery(TpaRequest.class)
+         .filter(
+            Filters.eq("target", player.getUniqueId().toString()),
+            Filters.eq("sender", target.getUniqueId().toString()),
+            Filters.eq("active", true)
+         )
+         .stream()
+         .findFirst()
+         .ifPresentOrElse(request -> {
+
+              request.setActive(false);
+              database.save(request);
+              Bukkit.getScheduler().runTask(plugin, () -> target.teleport(player));
+              player.sendMessage(messaging.successMessage("Teleport commencing..."));
+              target.sendMessage(messaging.successMessage("Teleport commencing..."));
+            }, () ->
+               player.sendMessage(messaging.errorMessage("You don't have an active incoming request from that player."))
+         );
+    });
+    return true;
+  }
 }

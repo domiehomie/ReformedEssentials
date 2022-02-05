@@ -15,21 +15,21 @@ public class DbPlayerCreate implements Listener {
 	private final IDatabase database;
 	private final Messaging messaging;
 
-	private final ReformedEssentials pl;
+	private final ReformedEssentials plugin;
 
 	public DbPlayerCreate(ReformedEssentials reformedEssentials, Messaging messaging, IDatabase database) {
-		this.pl = reformedEssentials;
+		this.plugin = reformedEssentials;
 		this.database = database;
 		this.messaging = messaging;
 	}
 
 	@EventHandler
 	public void onJoin(PlayerJoinEvent e) {
-		Bukkit.getScheduler().runTaskAsynchronously(pl, () -> {
+		Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
 			var player = this.database.createQuery(DbPlayer.class).filter(Filters.eq("uuid", e.getPlayer().getUniqueId().toString())).first();
 			if(player == null) {
 				this.database.save(new DbPlayer(e.getPlayer().getUniqueId()));
-				Bukkit.getScheduler().runTask(pl,
+				Bukkit.getScheduler().runTask(plugin,
 								() -> Bukkit.getConsoleSender().sendMessage(this.messaging.normalMessage("Saved player ")
 								.append(messaging.simpleGradient(e.getPlayer().getName()))
 								.append(messaging.normalMessageNoPrefix("."))));

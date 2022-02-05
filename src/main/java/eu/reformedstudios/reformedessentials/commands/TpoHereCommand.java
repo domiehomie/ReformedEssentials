@@ -26,6 +26,7 @@ public class TpoHereCommand extends CommandListener {
 			.createCommand());
 	}
 
+
 	@Override
 	public boolean exec(CommandSender sender, Command cmd, String label, String[] args) {
 		if (!(sender instanceof Player player)) {

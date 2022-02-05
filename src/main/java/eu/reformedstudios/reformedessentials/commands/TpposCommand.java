@@ -41,9 +41,9 @@ public class TpposCommand extends CommandListener {
 			int y = Integer.parseInt(args[1]);
 			int z = Integer.parseInt(args[2]);
 
-			Location l = new Location(player.getWorld(), x, y, z);
-			player.teleport(l);
-		} catch (NumberFormatException e) {
+			Location location = new Location(player.getWorld(), x, y, z);
+			player.teleport(location);
+		} catch (NumberFormatException exception) {
 			sender.sendMessage(messaging.errorMessage("You must provide numbers as coordinates."));
 		}
 		return true;
