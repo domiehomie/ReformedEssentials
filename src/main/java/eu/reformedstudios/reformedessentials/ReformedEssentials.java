@@ -62,6 +62,9 @@ public class ReformedEssentials extends JavaPlugin {
     manager.registerCommand(new MessageCommand(this));
     manager.registerCommand(new SocialSpyCommand(this));
     manager.registerCommand(new ReplyCommand(this));
+    manager.registerCommand(new CompassCommand());
+    manager.registerCommand(new ExtinguishCommand());
+    manager.registerCommand(new ItemCommand());
     manager.registerCommand(new HelpCommand(module.getCommandManager()));
 
 
