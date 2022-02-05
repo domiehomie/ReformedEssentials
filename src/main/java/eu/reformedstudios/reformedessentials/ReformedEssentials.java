@@ -57,6 +57,7 @@ public class ReformedEssentials extends JavaPlugin {
     manager.registerCommand(new TpAcceptCommand(this));
     manager.registerCommand(new TpDenyCommand(this));
     manager.registerCommand(new HatCommand());
+    manager.registerCommand(new MoreCommand());
     manager.registerCommand(new HelpCommand(module.getCommandManager()));
 
 
