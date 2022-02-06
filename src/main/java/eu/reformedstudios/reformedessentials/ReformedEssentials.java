@@ -73,6 +73,10 @@ public class ReformedEssentials extends JavaPlugin {
     manager.registerCommand(new SeenCommand(this));
     manager.registerCommand(new PingCommand());
     manager.registerCommand(new GetposCommand());
+    manager.registerCommand(new ClearInventoryCommand(this));
+    manager.registerCommand(new FeedCommand());
+    manager.registerCommand(new HealCommand());
+    manager.registerCommand(new WhoIsCommand(this));
     manager.registerCommand(new HelpCommand(module.getCommandManager()));
 
     PluginManager pm = Bukkit.getPluginManager();
