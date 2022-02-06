@@ -48,7 +48,7 @@ public class ItemCommand extends CommandListener {
          "Successfully gave you " + amount + " of " + material.name().toLowerCase().replaceAll("_", " ") + ".")
       );
     } catch (IllegalArgumentException exception) {
-      sender.sendMessage("The item or amount was invalid.");
+      sender.sendMessage(messaging.errorMessage("The item or amount was invalid."));
     }
 
     return true;
