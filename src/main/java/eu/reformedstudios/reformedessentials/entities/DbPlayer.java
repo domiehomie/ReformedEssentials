@@ -3,8 +3,10 @@ package eu.reformedstudios.reformedessentials.entities;
 import dev.morphia.annotations.Entity;
 import dev.morphia.annotations.Id;
 import dev.morphia.annotations.Property;
+import org.bson.BsonTimestamp;
 import org.bson.types.ObjectId;
 
+import java.time.Instant;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
@@ -28,6 +30,8 @@ public class DbPlayer {
   boolean acceptingMessages;
   @Property(value = "homes")
   List<DbHome> homes;
+  @Property("lastjoined")
+  BsonTimestamp lastJoined;
 
   public DbPlayer(UUID uuid) {
     this.uuid = uuid.toString();
@@ -36,6 +40,15 @@ public class DbPlayer {
     this.autoAcceptingTpa = false;
     this.socialspy = false;
     this.acceptingMessages = true;
+    this.lastJoined = new BsonTimestamp(Instant.now().getEpochSecond());
+  }
+
+  public BsonTimestamp getLastJoined() {
+    return lastJoined;
+  }
+
+  public void setLastJoined(BsonTimestamp lastJoined) {
+    this.lastJoined = lastJoined;
   }
 
   public boolean isAcceptingMessages() {

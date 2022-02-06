@@ -34,12 +34,12 @@ public class ItemCommand extends CommandListener {
     }
 
     if (args.length < 1) {
-      player.sendMessage(messaging.errorMessage("You must provide an item and an amount."));
+      player.sendMessage(messaging.errorMessage("You must provide an item."));
       return true;
     }
     try {
 
-      int amount = args.length == 0 ? 1 : Integer.parseInt(args[1]);
+      int amount = args.length < 2 ? 1 : Integer.parseInt(args[1]);
       Material material = Material.valueOf(args[0].toUpperCase());
 
       player.getInventory().addItem(new ItemStack(material, amount));

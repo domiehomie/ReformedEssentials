@@ -12,7 +12,9 @@ import eu.reformedstudios.reformedessentials.entities.DbHome;
 import eu.reformedstudios.reformedessentials.entities.DbPlayer;
 import eu.reformedstudios.reformedessentials.entities.TpaRequest;
 import eu.reformedstudios.reformedessentials.events.bukkit.DbPlayerCreate;
+import eu.reformedstudios.reformedessentials.events.bukkit.LastJoinedEvents;
 import org.bukkit.Bukkit;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class ReformedEssentials extends JavaPlugin {
@@ -65,11 +67,15 @@ public class ReformedEssentials extends JavaPlugin {
     manager.registerCommand(new CompassCommand());
     manager.registerCommand(new ExtinguishCommand());
     manager.registerCommand(new ItemCommand());
+    manager.registerCommand(new KillCommand());
+    manager.registerCommand(new SudoCommand());
+    manager.registerCommand(new FlyCommand());
+    manager.registerCommand(new SeenCommand(this));
     manager.registerCommand(new HelpCommand(module.getCommandManager()));
 
-
-    Bukkit.getPluginManager().registerEvents(new DbPlayerCreate(this, messaging, database), this);
-
+    PluginManager pm = Bukkit.getPluginManager();
+    pm.registerEvents(new DbPlayerCreate(this, messaging, database), this);
+    pm.registerEvents(new LastJoinedEvents(this, database), this);
   }
 
   @Override
