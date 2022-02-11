@@ -32,14 +32,16 @@ public class EnderChestCommand extends CommandListener {
       }
 
       if (args.length == 0) {
-         player.openInventory(player.getEnderChest());
+         if (player.hasPermission("re.echest.self"))
+            player.openInventory(player.getEnderChest());
       } else {
          var target = Bukkit.getPlayer(args[0]);
          if (target == null) {
             sender.sendMessage(messaging.errorMessage("That player is not online."));
             return true;
          }
-         player.openInventory(target.getEnderChest());
+         if (player.hasPermission("re.echest.other"))
+            player.openInventory(target.getEnderChest());
       }
 
 
