@@ -16,46 +16,46 @@ import org.bukkit.entity.Player;
 public class TpToggleCommand extends CommandListener {
 
 
-	private final ReformedEssentials plugin;
-	@Inject
-	private Messaging messaging;
-	@Inject
-	private IDatabase database;
+   private final ReformedEssentials plugin;
+   @Inject
+   private Messaging messaging;
+   @Inject
+   private IDatabase database;
 
-	public TpToggleCommand(ReformedEssentials plugin) {
-		super(new CommandBuilder()
-			.setName("tptoggle")
-			.setDescription("Toggles ")
-			.setUsage("/tptoggle")
-			.setAliases()
-			.setPermissions()
-			.createCommand());
+   public TpToggleCommand(ReformedEssentials plugin) {
+      super(new CommandBuilder()
+         .setName("tptoggle")
+         .setDescription("Toggles ")
+         .setUsage("/tptoggle")
+         .setAliases()
+         .setPermissions("re.tptoggle")
+         .createCommand());
 
-		this.plugin = plugin;
-	}
+      this.plugin = plugin;
+   }
 
-	@Override
-	public boolean exec(CommandSender sender, Command cmd, String label, String[] args) {
-		if (!(sender instanceof Player player)) {
-			sender.sendMessage(messaging.errorMessage("Only players can execute this command."));
-			return true;
-		}
+   @Override
+   public boolean exec(CommandSender sender, Command cmd, String label, String[] args) {
+      if (!(sender instanceof Player player)) {
+         sender.sendMessage(messaging.errorMessage("Only players can execute this command."));
+         return true;
+      }
 
-		Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> database.createQuery(DbPlayer.class)
-			.filter(Filters.eq("uuid", player.getUniqueId().toString()))
-			.stream()
-			.findFirst()
-			.ifPresent(dbPlayer -> {
-				dbPlayer.setAllowingTeleports(!dbPlayer.isAllowingTeleports());
-				database.save(dbPlayer);
+      Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> database.createQuery(DbPlayer.class)
+         .filter(Filters.eq("uuid", player.getUniqueId().toString()))
+         .stream()
+         .findFirst()
+         .ifPresent(dbPlayer -> {
+            dbPlayer.setAllowingTeleports(!dbPlayer.isAllowingTeleports());
+            database.save(dbPlayer);
 
-				player.sendMessage(messaging.normalMessage("Allow teleports: ")
-					.append(messaging.success(String.valueOf(dbPlayer.isAllowingTeleports())))
-					.append(messaging.normalMessageNoPrefix("."))
-				);
-			}));
+            player.sendMessage(messaging.normalMessage("Allow teleports: ")
+               .append(messaging.success(String.valueOf(dbPlayer.isAllowingTeleports())))
+               .append(messaging.normalMessageNoPrefix("."))
+            );
+         }));
 
 
-		return true;
-	}
+      return true;
+   }
 }

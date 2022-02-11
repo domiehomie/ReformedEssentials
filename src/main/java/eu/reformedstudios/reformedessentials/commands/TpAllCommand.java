@@ -11,50 +11,50 @@ import org.bukkit.entity.Player;
 
 public class TpAllCommand extends CommandListener {
 
-  @Inject
-  private Messaging messaging;
+   @Inject
+   private Messaging messaging;
 
-  public TpAllCommand() {
-    super(new CommandBuilder()
-       .setName("tpall")
-       .setDescription("Teleports all players to you or another player.")
-       .setUsage("/tpall [player]")
-       .setAliases()
-       .setPermissions()
-       .createCommand());
-  }
+   public TpAllCommand() {
+      super(new CommandBuilder()
+         .setName("tpall")
+         .setDescription("Teleports all players to you or another player.")
+         .setUsage("/tpall [player]")
+         .setAliases()
+         .setPermissions("re.tpall")
+         .createCommand());
+   }
 
-  @Override
-  public boolean exec(CommandSender sender, Command cmd, String label, String[] args) {
-    if (!(sender instanceof Player player)) {
-      sender.sendMessage(messaging.errorMessage("Only players can execute this command."));
-      return true;
-    }
+   @Override
+   public boolean exec(CommandSender sender, Command cmd, String label, String[] args) {
+      if (!(sender instanceof Player player)) {
+         sender.sendMessage(messaging.errorMessage("Only players can execute this command."));
+         return true;
+      }
 
-    if (args.length == 0) {
+      if (args.length == 0) {
+         player.sendMessage(messaging.successMessage("Teleporting..."));
+         Bukkit.getOnlinePlayers()
+            .stream()
+            .filter(target -> !target.getUniqueId().equals(player.getUniqueId()))
+            .forEach(target -> target.teleport(player));
+         player.sendMessage(messaging.successMessage("Finished!"));
+         return true;
+      }
+      Player target = Bukkit.getPlayer(args[0]);
+
+      if (target == null) {
+         player.sendMessage(messaging.errorMessage("Invalid player."));
+         return true;
+      }
       player.sendMessage(messaging.successMessage("Teleporting..."));
       Bukkit.getOnlinePlayers()
          .stream()
-         .filter(target -> !target.getUniqueId().equals(player.getUniqueId()))
-         .forEach(target -> target.teleport(player));
+         .filter(p -> !p.getUniqueId().equals(target.getUniqueId()))
+         .forEach(p -> p.teleport(target));
       player.sendMessage(messaging.successMessage("Finished!"));
+
+
       return true;
-    }
-    Player target = Bukkit.getPlayer(args[0]);
-
-    if (target == null) {
-      player.sendMessage(messaging.errorMessage("Invalid player."));
-      return true;
-    }
-    player.sendMessage(messaging.successMessage("Teleporting..."));
-    Bukkit.getOnlinePlayers()
-       .stream()
-       .filter(p -> !p.getUniqueId().equals(target.getUniqueId()))
-       .forEach(p -> p.teleport(target));
-    player.sendMessage(messaging.successMessage("Finished!"));
-
-
-    return true;
-  }
+   }
 }
 

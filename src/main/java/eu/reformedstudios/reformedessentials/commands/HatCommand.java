@@ -13,36 +13,36 @@ import org.bukkit.inventory.ItemStack;
 
 public class HatCommand extends CommandListener {
 
-  @Inject
-  private Messaging messaging;
+   @Inject
+   private Messaging messaging;
 
-  public HatCommand() {
-    super(new CommandBuilder()
-       .setName("hat")
-       .setDescription("Wears whatever you're holding on your head.")
-       .setUsage("/hat")
-       .setAliases("head", "wear")
-       .setPermissions()
-       .createCommand()
-    );
-  }
+   public HatCommand() {
+      super(new CommandBuilder()
+         .setName("hat")
+         .setDescription("Wears whatever you're holding on your head.")
+         .setUsage("/hat")
+         .setAliases("head", "wear")
+         .setPermissions("re.hat")
+         .createCommand()
+      );
+   }
 
-  @Override
-  public boolean exec(CommandSender sender, Command cmd, String label, String[] args) {
-    if (!(sender instanceof Player player)) {
-      sender.sendMessage(messaging.errorMessage("Only players can execute this command."));
+   @Override
+   public boolean exec(CommandSender sender, Command cmd, String label, String[] args) {
+      if (!(sender instanceof Player player)) {
+         sender.sendMessage(messaging.errorMessage("Only players can execute this command."));
+         return true;
+      }
+
+      ItemStack handItem = player.getInventory().getItemInMainHand();
+      ItemStack hatItem = player.getInventory().getItem(EquipmentSlot.HEAD);
+
+      player.getInventory().setItemInMainHand(hatItem);
+      player.getInventory().setItem(EquipmentSlot.HEAD, handItem);
+
+      player.sendMessage(messaging.successMessage("Fasionable!"));
+
       return true;
-    }
-
-    ItemStack handItem = player.getInventory().getItemInMainHand();
-    ItemStack hatItem = player.getInventory().getItem(EquipmentSlot.HEAD);
-
-    player.getInventory().setItemInMainHand(hatItem);
-    player.getInventory().setItem(EquipmentSlot.HEAD, handItem);
-
-    player.sendMessage(messaging.successMessage("Fasionable!"));
-
-    return true;
-  }
+   }
 }
 

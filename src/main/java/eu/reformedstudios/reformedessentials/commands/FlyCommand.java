@@ -10,32 +10,31 @@ import org.bukkit.entity.Player;
 
 public class FlyCommand extends CommandListener {
 
-  @Inject
-  private Messaging messaging;
+   @Inject
+   private Messaging messaging;
 
-  public FlyCommand() {
-    super(new CommandBuilder()
-       .setName("fly")
-       .setDescription("Enables you to fly.")
-       .setUsage("/fly")
-       .setAliases("flight")
-       .setPermissions()
-       .createCommand()
-    );
-  }
+   public FlyCommand() {
+      super(new CommandBuilder()
+         .setName("fly")
+         .setDescription("Enables you to fly.")
+         .setUsage("/fly")
+         .setAliases("flight")
+         .setPermissions("re.fly")
+         .createCommand()
+      );
+   }
 
-  @Override
-  public boolean exec(CommandSender sender, Command cmd, String label, String[] args) {
-    if (!(sender instanceof Player player)) {
-      sender.sendMessage(messaging.errorMessage("Only players can execute this command."));
+   @Override
+   public boolean exec(CommandSender sender, Command cmd, String label, String[] args) {
+      if (!(sender instanceof Player player)) {
+         sender.sendMessage(messaging.errorMessage("Only players can execute this command."));
+         return true;
+      }
+      
+      player.setAllowFlight(!player.getAllowFlight());
+      player.sendMessage(messaging.successMessage("Toggled flight."));
+
       return true;
-    }
-
-
-    player.setAllowFlight(!player.getAllowFlight());
-    player.sendMessage(messaging.successMessage("Toggled flight."));
-
-    return true;
-  }
+   }
 }
 

@@ -11,37 +11,37 @@ import org.bukkit.entity.Player;
 
 public class CompassCommand extends CommandListener {
 
-  @Inject
-  private Messaging messaging;
+   @Inject
+   private Messaging messaging;
 
-  public CompassCommand() {
-    super(new CommandBuilder()
-       .setName("compass")
-       .setDescription("Shows you where you are looking.")
-       .setUsage("/compass")
-       .setAliases("direction")
-       .setPermissions()
-       .createCommand()
-    );
-  }
+   public CompassCommand() {
+      super(new CommandBuilder()
+         .setName("compass")
+         .setDescription("Shows you where you are looking.")
+         .setUsage("/compass")
+         .setAliases("direction")
+         .setPermissions("re.compass")
+         .createCommand()
+      );
+   }
 
-  @Override
-  public boolean exec(CommandSender sender, Command cmd, String label, String[] args) {
-    if (!(sender instanceof Player player)) {
-      sender.sendMessage(messaging.errorMessage("Only players can execute this command."));
+   @Override
+   public boolean exec(CommandSender sender, Command cmd, String label, String[] args) {
+      if (!(sender instanceof Player player)) {
+         sender.sendMessage(messaging.errorMessage("Only players can execute this command."));
+         return true;
+      }
+
+
+      player.sendMessage(
+         messaging.normalMessage("Your direction: ")
+            .append(messaging.simpleGradient(String.valueOf(player.getLocation().getPitch())))
+            .append(Component.newline())
+            .append(messaging.normalMessage("Which is "))
+            .append(messaging.simpleGradient(player.getFacing().name().toLowerCase()))
+      );
+
       return true;
-    }
-
-
-    player.sendMessage(
-       messaging.normalMessage("Your direction: ")
-          .append(messaging.simpleGradient(String.valueOf(player.getLocation().getPitch())))
-          .append(Component.newline())
-          .append(messaging.normalMessage("Which is "))
-          .append(messaging.simpleGradient(player.getFacing().name().toLowerCase()))
-    );
-    
-    return true;
-  }
+   }
 }
 

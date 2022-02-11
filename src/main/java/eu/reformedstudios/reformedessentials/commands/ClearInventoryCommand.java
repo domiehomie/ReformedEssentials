@@ -29,7 +29,7 @@ public class ClearInventoryCommand extends CommandListener {
        .setDescription("Clears your inventory.")
        .setUsage("/clearinventory [force]")
        .setAliases("ci")
-       .setPermissions()
+       .setPermissions("re.clearinventory")
        .createCommand()
     );
     this.plugin = plugin;

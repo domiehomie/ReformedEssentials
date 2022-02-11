@@ -12,32 +12,32 @@ import java.util.Arrays;
 
 public class KickAllCommand extends CommandListener {
 
-  @Inject
-  private Messaging messaging;
+   @Inject
+   private Messaging messaging;
 
-  public KickAllCommand() {
-    super(new CommandBuilder()
-       .setName("kickall")
-       .setDescription("Kicks all players from the game.")
-       .setUsage("/kickall [reason]")
-       .setAliases()
-       .setPermissions()
-       .createCommand());
-  }
+   public KickAllCommand() {
+      super(new CommandBuilder()
+         .setName("kickall")
+         .setDescription("Kicks all players from the game.")
+         .setUsage("/kickall [reason]")
+         .setAliases()
+         .setPermissions("re.kickall")
+         .createCommand());
+   }
 
-  @Override
-  public boolean exec(CommandSender sender, Command cmd, String label, String[] args) {
-    if (args.length == 0) {
-      Bukkit.getOnlinePlayers().forEach(p -> p.kick(messaging.simpleGradient("You have been kicked.")));
+   @Override
+   public boolean exec(CommandSender sender, Command cmd, String label, String[] args) {
+      if (args.length == 0) {
+         Bukkit.getOnlinePlayers().forEach(p -> p.kick(messaging.simpleGradient("You have been kicked.")));
+         return true;
+      }
+
+      StringBuilder messageBuilder = new StringBuilder();
+      Arrays.stream(args).forEach(argument -> messageBuilder.append(argument).append(" "));
+      Bukkit.getOnlinePlayers().forEach(player -> player.kick(messaging.simpleGradient(messageBuilder.toString())));
+
       return true;
-    }
-
-    StringBuilder messageBuilder = new StringBuilder();
-    Arrays.stream(args).forEach(argument -> messageBuilder.append(argument).append(" "));
-    Bukkit.getOnlinePlayers().forEach(player -> player.kick(messaging.simpleGradient(messageBuilder.toString())));
-
-    return true;
-  }
+   }
 
 
 }

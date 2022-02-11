@@ -11,47 +11,47 @@ import org.bukkit.entity.Player;
 
 public class PingCommand extends CommandListener {
 
-  @Inject
-  private Messaging messaging;
+   @Inject
+   private Messaging messaging;
 
-  public PingCommand() {
-    super(new CommandBuilder()
-       .setName("ping")
-       .setDescription("Displays yours, or someone else's ping.")
-       .setUsage("/ping [player]")
-       .setAliases()
-       .setPermissions()
-       .createCommand()
-    );
-  }
+   public PingCommand() {
+      super(new CommandBuilder()
+         .setName("ping")
+         .setDescription("Displays yours, or someone else's ping.")
+         .setUsage("/ping [player]")
+         .setAliases()
+         .setPermissions("re.ping")
+         .createCommand()
+      );
+   }
 
-  @Override
-  public boolean exec(CommandSender sender, Command cmd, String label, String[] args) {
-    if (!(sender instanceof Player player)) {
-      sender.sendMessage(messaging.errorMessage("Only players can execute this command."));
-      return true;
-    }
+   @Override
+   public boolean exec(CommandSender sender, Command cmd, String label, String[] args) {
+      if (!(sender instanceof Player player)) {
+         sender.sendMessage(messaging.errorMessage("Only players can execute this command."));
+         return true;
+      }
 
-    if (args.length == 0) {
+      if (args.length == 0) {
+         player.sendMessage(
+            messaging.normalMessage("Ping: ")
+               .append(messaging.simpleGradient(String.valueOf(player.getPing())))
+         );
+         return true;
+      }
+
+      Player target = Bukkit.getPlayer(args[0]);
+      if (target == null) {
+         player.sendMessage(messaging.errorMessage("Player not found."));
+         return true;
+      }
+
       player.sendMessage(
          messaging.normalMessage("Ping: ")
-            .append(messaging.simpleGradient(String.valueOf(player.getPing())))
+            .append(messaging.simpleGradient(String.valueOf(target.getPing())))
       );
+
       return true;
-    }
-
-    Player target = Bukkit.getPlayer(args[0]);
-    if (target == null) {
-      player.sendMessage(messaging.errorMessage("Player not found."));
-      return true;
-    }
-
-    player.sendMessage(
-       messaging.normalMessage("Ping: ")
-          .append(messaging.simpleGradient(String.valueOf(target.getPing())))
-    );
-
-    return true;
-  }
+   }
 }
 
