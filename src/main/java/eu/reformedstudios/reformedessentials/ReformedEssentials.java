@@ -3,6 +3,7 @@ package eu.reformedstudios.reformedessentials;
 import com.google.inject.Inject;
 import eu.reformedstudios.reformedcore.util.Messaging;
 import eu.reformedstudios.reformedcoreapi.commands.ICommandManager;
+import eu.reformedstudios.reformedcoreapi.config.IConfigurationManager;
 import eu.reformedstudios.reformedcoreapi.database.IDatabase;
 import eu.reformedstudios.reformedcoreapi.modules.IEventManager;
 import eu.reformedstudios.reformedcoreapi.modules.ReformedModule;
@@ -25,8 +26,11 @@ public class ReformedEssentials extends JavaPlugin {
   private Messaging messaging;
   @Inject
   private IDatabase database;
+  @Inject
+  private IConfigurationManager cfgManager;
 
   private ReformedModule module;
+
 
   @Override
   public void onEnable() {
@@ -82,7 +86,10 @@ public class ReformedEssentials extends JavaPlugin {
     PluginManager pm = Bukkit.getPluginManager();
     pm.registerEvents(new DbPlayerCreate(this, messaging, database), this);
     pm.registerEvents(new LastJoinedEvents(this, database), this);
+
+
   }
+
 
   @Override
   public void onDisable() {
